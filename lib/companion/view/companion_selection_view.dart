@@ -22,24 +22,24 @@ class _CompanionSelectionViewState extends State<CompanionSelectionView> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            actions: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    companionSelected = !companionSelected;
-                  });
-                },
-                icon: Icon(Icons.person),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    colorSelected = !colorSelected;
-                  });
-                },
-                icon: Icon(Icons.color_lens),
-              ),
-            ],
+            // actions: [
+            //   IconButton(
+            //     onPressed: () {
+            //       setState(() {
+            //         companionSelected = !companionSelected;
+            //       });
+            //     },
+            //     icon: Icon(Icons.person),
+            //   ),
+            //   IconButton(
+            //     onPressed: () {
+            //       setState(() {
+            //         colorSelected = !colorSelected;
+            //       });
+            //     },
+            //     icon: Icon(Icons.color_lens),
+            //   ),
+            // ],
             title: Text('Companions'),
           ),
           body: Responsive(mobile: _MobileColumn(), desktop: _DesktopColumn()),
@@ -55,12 +55,12 @@ class _MobileColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text('Companions keep track of your score'),
         SizedBox(
-          height: kBaseFactor / 4,
+          height: kBaseFactor,
         ),
         Flexible(
           flex: 4,
@@ -69,11 +69,12 @@ class _MobileColumn extends StatelessWidget {
         SizedBox(
           height: kBaseFactor * 2,
         ),
-        Text('Select a Color'),
-        SizedBox(
-          height: kBaseFactor / 4,
-        ),
-        Flexible(child: AvatarColorList()),
+
+        // SizedBox(
+        //   height: kBaseFactor / 4,
+        // ),
+        AvatarColorList(),
+
         Spacer(
           flex: 2,
         ),
