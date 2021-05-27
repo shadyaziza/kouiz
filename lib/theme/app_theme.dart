@@ -15,5 +15,12 @@ class AppTheme {
           foregroundColor: kWhiteColor,
           centerTitle: true,
           elevation: 0.0,
-          backgroundColor: kBackgroundColor));
+          backgroundColor: kBackgroundColor),
+      cardTheme: CardTheme(
+        color: kCardDarkColor,
+        margin: EdgeInsets.all(kBaseFactor * 3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kBaseFactor),
+        ),
+      ));
 }

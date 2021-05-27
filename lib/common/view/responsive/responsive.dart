@@ -25,6 +25,8 @@ class Responsive extends StatelessWidget {
   static bool isDesktop(BuildContext context) =>
       MediaQuery.of(context).size.width >= 1100;
 
+  static double get maxWidth => 850;
+
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
@@ -40,5 +42,19 @@ class Responsive extends StatelessWidget {
     else {
       return mobile;
     }
+  }
+}
+
+class MaxWidthContainer extends StatelessWidget {
+  const MaxWidthContainer({Key? key, required this.child}) : super(key: key);
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        width: Responsive.maxWidth,
+        child: child,
+      ),
+    );
   }
 }

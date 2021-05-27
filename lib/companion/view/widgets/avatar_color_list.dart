@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kouiz/common/common.dart';
 import 'package:kouiz/theme/theme.dart';
 
 class AvatarColorList extends StatelessWidget {
@@ -24,7 +25,7 @@ class AvatarColorList extends StatelessWidget {
               borderRadius: BorderRadius.circular(kBaseFactor * 10),
             ),
             child: CircleAvatar(
-                maxRadius: 12,
+                maxRadius: Responsive.isDesktop(context) ? 24 : 16,
                 backgroundColor: e,
                 child: e == Colors.white
                     ? Container(height: 2, color: Colors.red)

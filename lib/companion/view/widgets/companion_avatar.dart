@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kouiz/common/common.dart';
 import 'package:kouiz/theme/theme.dart';
 import 'package:simple_animations/simple_animations.dart';
 
@@ -17,11 +18,12 @@ class CompanionAvatar extends StatelessWidget {
     print(isSelected);
     if (isSelected == null)
       return CircleAvatar(
-        maxRadius: 40,
+        radius: Responsive.isDesktop(context) ? 72 : 40,
         backgroundColor: Colors.transparent,
         child: Image.asset(
           imagePath,
-          height: 120,
+          fit: BoxFit.contain,
+          // height: Responsive.isDesktop(context) ? 120 : 64,
         ),
       );
     return PlayAnimation<double>(
@@ -33,10 +35,11 @@ class CompanionAvatar extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor:
                 isSelected! ? kAvatarBlueColor : Colors.transparent,
-            maxRadius: 40,
+            radius: Responsive.isDesktop(context) ? 72 : 40,
             child: Image.asset(
               imagePath,
-              height: 120,
+              fit: BoxFit.contain,
+              // height: Responsive.isDesktop(context) ? 120 : 64,
             ),
           ),
         );

@@ -18,57 +18,82 @@ class _CompanionSelectionViewState extends State<CompanionSelectionView> {
   @override
   Widget build(BuildContext context) {
     return ParticlesBackground(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  companionSelected = !companionSelected;
-                });
-              },
-              icon: Icon(Icons.person),
-            ),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  colorSelected = !colorSelected;
-                });
-              },
-              icon: Icon(Icons.color_lens),
-            ),
-          ],
-          title: Text('Companions'),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('Companions keep track of your score'),
-            SizedBox(
-              height: kBaseFactor / 4,
-            ),
-            Flexible(
-              flex: 12,
-              child: CompanionList(),
-            ),
-            SizedBox(
-              height: kBaseFactor * 2,
-            ),
-            Text('Select a Color'),
-            SizedBox(
-              height: kBaseFactor / 4,
-            ),
-            AvatarColorList(),
-            Spacer(
-              flex: 2,
-            ),
-            GradientButton(
-                onPressed: companionSelected ? () {} : null, label: 'NEXT')
-          ],
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    companionSelected = !companionSelected;
+                  });
+                },
+                icon: Icon(Icons.person),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    colorSelected = !colorSelected;
+                  });
+                },
+                icon: Icon(Icons.color_lens),
+              ),
+            ],
+            title: Text('Companions'),
+          ),
+          body: Responsive(mobile: _MobileColumn(), desktop: _DesktopColumn()),
         ),
       ),
+    );
+  }
+}
+
+class _MobileColumn extends StatelessWidget {
+  const _MobileColumn({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text('Companions keep track of your score'),
+        SizedBox(
+          height: kBaseFactor / 4,
+        ),
+        Flexible(
+          flex: 4,
+          child: CompanionList(),
+        ),
+        SizedBox(
+          height: kBaseFactor * 2,
+        ),
+        Text('Select a Color'),
+        SizedBox(
+          height: kBaseFactor / 4,
+        ),
+        Flexible(child: AvatarColorList()),
+        Spacer(
+          flex: 2,
+        ),
+        GradientButton(onPressed: () {}, label: 'NEXT')
+      ],
+    );
+  }
+}
+
+class _DesktopColumn extends StatelessWidget {
+  const _DesktopColumn({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaxWidthContainer(
+      child: Card(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: kBaseFactor * 4),
+        child: _MobileColumn(),
+      )),
     );
   }
 }
