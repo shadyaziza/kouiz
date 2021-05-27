@@ -3,13 +3,14 @@ import 'package:kouiz/companion/companion.dart';
 import 'package:kouiz/main.dart';
 import 'package:kouiz/onboarding/view/onboarding_view.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:kouiz/common/common.dart';
 
 class AppRouter {
   static final String homeRoute = 'home';
   static final String companionSelectionRoute = 'companion-select';
   static final Map<String, Widget Function(BuildContext)> routes = {
     '/': (_) => OnboardingView(),
-    homeRoute: (_) => HomePage(),
+    homeRoute: (_) => HomeView(),
     companionSelectionRoute: (_) => CompanionSelectionView(),
   };
   // static final Map<Pattern, VxPageBuilder> routes = {

@@ -28,16 +28,8 @@ class GradientButton extends StatelessWidget {
                 constraints:
                     BoxConstraints(minWidth: 275, maxWidth: 275, minHeight: 75),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(kBaseFactor),
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).primaryColorDark,
-                      Theme.of(context).primaryColorLight,
-                    ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                ),
+                    borderRadius: BorderRadius.circular(kBaseFactor),
+                    gradient: AppTheme.appGradient),
                 child: Text(
                   label,
                   style: TextStyle(color: kWhiteColor),

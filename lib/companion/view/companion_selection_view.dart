@@ -78,7 +78,11 @@ class _MobileColumn extends StatelessWidget {
         Spacer(
           flex: 2,
         ),
-        GradientButton(onPressed: () {}, label: 'NEXT')
+        GradientButton(
+            onPressed: () {
+              Navigator.pushNamed(context, AppRouter.homeRoute);
+            },
+            label: 'NEXT')
       ],
     );
   }
