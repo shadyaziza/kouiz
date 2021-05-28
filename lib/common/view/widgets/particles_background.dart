@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kouiz/theme/theme.dart';
 import 'package:simple_animations/simple_animations.dart';
+
+import '../../../theme/theme.dart';
 
 class ParticlesBackground extends StatelessWidget {
   const ParticlesBackground({Key? key, required this.child}) : super(key: key);

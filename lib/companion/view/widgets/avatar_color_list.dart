@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kouiz/common/common.dart';
-import 'package:kouiz/theme/theme.dart';
+
+import '../../../common/common.dart';
+import '../../../theme/theme.dart';
 
 class AvatarColorList extends StatelessWidget {
   const AvatarColorList({Key? key}) : super(key: key);

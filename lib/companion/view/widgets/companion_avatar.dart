@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kouiz/common/common.dart';
-import 'package:kouiz/theme/theme.dart';
 import 'package:simple_animations/simple_animations.dart';
+
+import '../../../common/common.dart';
+import '../../../theme/theme.dart';
 
 class CompanionAvatar extends StatelessWidget {
   const CompanionAvatar(

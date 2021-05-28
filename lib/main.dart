@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:kouiz/common/view/router/router.dart';
-import 'package:kouiz/theme/theme.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'package:velocity_x/velocity_x.dart';
+
+import 'common/view/router/router.dart';
+import 'theme/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
-  runApp(Kouiz());
+  runApp(ProviderScope(child: Kouiz()));
 }
 
 class Kouiz extends StatelessWidget {

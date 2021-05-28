@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kouiz/theme/theme.dart';
 import 'package:simple_animations/simple_animations.dart';
+
+import '../../../theme/theme.dart';
 
 class GradientButton extends StatelessWidget {
   const GradientButton({Key? key, required this.onPressed, required this.label})

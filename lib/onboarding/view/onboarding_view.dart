@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kouiz/common/common.dart';
-import 'package:kouiz/common/view/widgets/gradient_button.dart';
-import 'package:kouiz/theme/theme.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../common/common.dart';
+import '../../common/view/widgets/gradient_button.dart';
+import '../../theme/theme.dart';
 // import 'package:velocity_x/velocity_x.dart';
 
 class OnboardingView extends StatelessWidget {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:kouiz/common/common.dart';
-import 'package:kouiz/theme/app_theme.dart';
-import 'package:kouiz/theme/constants.dart';
+
+import '../../categories/view/choose_category_view.dart';
+import '../../categories/view/view.dart';
+import '../../theme/app_theme.dart';
+import '../../theme/constants.dart';
+import '../common.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -16,7 +18,12 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         title: Text('κουίζ'),
       ),
-      body: ParticlesBackground(child: Container()),
+      body: ParticlesBackground(
+          child: PageView(
+        children: [
+          ChooseCategoryView(),
+        ],
+      )),
     );
   }
 }

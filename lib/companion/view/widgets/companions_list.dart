@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kouiz/companion/view/widgets/widgets.dart';
-import 'package:kouiz/theme/theme.dart';
 import 'package:flutter/widgets.dart';
+
+import '../../../theme/theme.dart';
+import 'widgets.dart';
 
 class CompanionList extends StatefulWidget {
   CompanionList({Key? key}) : super(key: key);

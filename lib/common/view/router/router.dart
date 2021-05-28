@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kouiz/companion/companion.dart';
-import 'package:kouiz/main.dart';
-import 'package:kouiz/onboarding/view/onboarding_view.dart';
-import 'package:velocity_x/velocity_x.dart';
-import 'package:kouiz/common/common.dart';
+
+import '../../../companion/companion.dart';
+import '../../../onboarding/view/onboarding_view.dart';
+import '../../common.dart';
 
 class AppRouter {
   static final String homeRoute = 'home';
