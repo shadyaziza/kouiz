@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kouiz/load_quiz/model/quiz.dart';
 
 import '../model/category.dart';
 
@@ -17,3 +18,18 @@ final categoryProvider = Provider<Set<Category>>(
     };
   },
 );
+final quizSettingsProvider = Provider<QuizSettingsBloc>((ref) {
+  //** setting category initally as null to enable quiz randomizer */
+  return QuizSettingsBloc(QuizSettings(category: null));
+});
+
+class QuizSettingsBloc {
+  QuizSettingsBloc(this.quizSettings);
+  QuizSettings quizSettings;
+  void setQuizSettings(QuizSettings settings) => quizSettings = settings;
+
+  @override
+  String toString() {
+    return "QuizSettings {'category':${quizSettings.category?.name}'limit':${quizSettings.limit},'diff':${quizSettings.difficulty}  'lvl':${quizSettings.level}  }";
+  }
+}

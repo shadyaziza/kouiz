@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kouiz/categories/service/category_provider.dart';
 
 import '../../../theme/theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DifficultySlider extends StatefulWidget {
   DifficultySlider({Key? key}) : super(key: key);
@@ -10,7 +12,7 @@ class DifficultySlider extends StatefulWidget {
 }
 
 class _DifficultySliderState extends State<DifficultySlider> {
-  double _value = 1;
+  double _value = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,17 @@ class _DifficultySliderState extends State<DifficultySlider> {
           mouseCursor: MouseCursor.defer,
           onChanged: (double newValue) {
             setState(() {
-              print(newValue);
               _value = newValue;
+              print('Do even value changes$_value');
             });
+            final provider = context.read(quizSettingsProvider);
+            final settings = provider.quizSettings;
+            provider.setQuizSettings(settings.copyWith(
+                category: null, level: _value.toInt(), limit: null));
+
+            print(provider.toString());
+            print(
+                'just under provider diff equals ${provider.quizSettings.difficulty}');
           }),
     );
   }

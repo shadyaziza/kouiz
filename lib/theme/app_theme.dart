@@ -70,8 +70,8 @@ class CustomSliderThumbCircle extends SliderComponentShape {
 
   const CustomSliderThumbCircle({
     required this.thumbRadius,
-    this.min = 0,
-    this.max = 10,
+    this.min = 5,
+    this.max = 20,
   });
 
   @override
@@ -122,6 +122,7 @@ class CustomSliderThumbCircle extends SliderComponentShape {
   }
 
   String getValue(double value) {
+    print('slider: $value, min:$min, max:$max');
     return (min + (max - min) * value).toInt().toString();
   }
 }
