@@ -8,11 +8,11 @@ import 'package:kouiz/categories/service/category_provider.dart';
 import 'package:kouiz/load_quiz/model/quiz.dart';
 // import 'package:http/http.dart' as http;
 
-final apiProvider = Provider<Api>((ref) => Api(ref.read));
+final apiProvider = Provider.autoDispose<Api>((ref) => Api(ref.read));
 final quizFutureProvider = FutureProvider.autoDispose<Quiz>((ref) {
   final api = ref.watch(apiProvider);
   final response = api.getQuiz();
-  ref.maintainState = true;
+  ref.maintainState = false;
   return response;
   // quizProvider = Provider<Quiz?>((ref) {
   //   return _fetchedQuiz;

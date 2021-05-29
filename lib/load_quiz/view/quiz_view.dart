@@ -7,6 +7,7 @@ import 'package:kouiz/common/common.dart';
 import 'package:kouiz/common/connectivity/view/connectivity_widget.dart';
 import 'package:kouiz/load_quiz/model/quiz.dart';
 import 'package:kouiz/load_quiz/service/api_provider.dart';
+import 'package:kouiz/load_quiz/service/ui_provider.dart';
 import 'package:kouiz/theme/constants.dart';
 
 class QuizView extends ConsumerWidget {
@@ -57,12 +58,13 @@ class QuizView extends ConsumerWidget {
 }
 
 class QuizFlow extends ConsumerWidget {
-  const QuizFlow({
+  QuizFlow({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    ;
     final quiz = watch(quizFutureProvider).data!.value;
 
     final List<Question> questions = quiz.questions;
@@ -72,6 +74,10 @@ class QuizFlow extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         NumberStepper(
+            onStepReached: (int newIndex) {
+              context.read(indexStateProvider).state.animateToPage(newIndex,
+                  duration: Duration(milliseconds: 450), curve: Curves.easeIn);
+            },
             direction: Axis.horizontal,
             activeStepColor: Theme.of(context).primaryColorLight,
             enableStepTapping: true,
@@ -82,8 +88,15 @@ class QuizFlow extends ConsumerWidget {
             lineColor: Colors.transparent),
         Expanded(
           child: PageView.builder(
+              controller: context.read(indexStateProvider).state,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: quiz.questions.length,
               itemBuilder: (_, index) {
+                // watch(indexStateProvider).addListener((state) {
+                //   _cont.animateToPage(state,
+                //       duration: Duration(milliseconds: 800),
+                //       curve: Curves.easeIn);
+                // });
                 final question = quiz.questions[index];
                 return QuestionPage(question: question);
               }),
