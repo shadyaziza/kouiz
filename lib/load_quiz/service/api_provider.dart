@@ -13,8 +13,13 @@ final quizFutureProvider =
   final api = ref.watch(apiProvider(settings));
   final response = api.getQuiz();
   ref.maintainState = true;
+  quizProvider = Provider<Quiz?>((ref) {
+    return _fetchedQuiz;
+  });
   return response;
 });
+late final quizProvider;
+Quiz? _fetchedQuiz;
 
 class Api {
   final QuizSettings settings;
@@ -45,7 +50,7 @@ class Api {
     final _res = _response(response);
 
     Quiz _quiz = Quiz.fromMap(response.data);
-
+    _fetchedQuiz = _quiz;
     return _quiz;
   }
 
