@@ -76,7 +76,7 @@ class QuizFlow extends ConsumerWidget {
         QuiestionsStepper(stepNumbers: stepNumbers),
         Expanded(
           child: PageView.builder(
-              controller: context.read(indexStateProvider).state,
+              controller: watch(indexStateProvider).state,
               physics: NeverScrollableScrollPhysics(),
               itemCount: quiz.questions.length,
               itemBuilder: (_, index) {
