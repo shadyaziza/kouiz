@@ -7,15 +7,14 @@ import 'package:kouiz/common/common.dart';
 import 'package:kouiz/common/connectivity/view/connectivity_widget.dart';
 import 'package:kouiz/load_quiz/model/quiz.dart';
 import 'package:kouiz/load_quiz/service/api_provider.dart';
+import 'package:kouiz/theme/constants.dart';
 
 class QuizView extends ConsumerWidget {
   const QuizView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final QuizSettings quizSettings =
-        ModalRoute.of(context)!.settings.arguments! as QuizSettings;
-    final quiz = watch(quizFutureProvider(quizSettings));
+    final quiz = watch(quizFutureProvider);
 
     return ConnectivityWidget(
       networkWidget: ParticlesBackground(
@@ -42,12 +41,14 @@ class QuizView extends ConsumerWidget {
                 ),
               ])),
           data: (Quiz quiz) {
-            return Scaffold(
-                appBar: AppBar(
-                  title: Text(
-                      '${quizSettings.category?.name}//${quizSettings.limit}//${quizSettings.difficulty}'),
-                ),
-                body: QuizFlow());
+            return ParticlesBackground(
+              child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  appBar: AppBar(
+                    title: Text('Live Quiz'),
+                  ),
+                  body: QuizFlow()),
+            );
           },
         ),
       ),
@@ -62,32 +63,112 @@ class QuizFlow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final quiz = watch(quizProvider!);
-    final Quiz _quiz = quiz!;
-    final List<Question> questions = _quiz.questions;
+    final quiz = watch(quizFutureProvider).data!.value;
+
+    final List<Question> questions = quiz.questions;
     final List<int> stepNumbers =
-        questions.map((e) => questions.indexOf(e)).toList();
+        questions.map((e) => questions.indexOf(e) + 1).toList();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         NumberStepper(
-          activeStep: 1,
-          direction: Axis.horizontal,
-          enableStepTapping: true,
-          numbers: stepNumbers,
-          enableNextPreviousButtons: false,
-        ),
+            direction: Axis.horizontal,
+            activeStepColor: Theme.of(context).primaryColorLight,
+            enableStepTapping: true,
+            numbers: stepNumbers,
+            numberStyle: TextStyle(color: kWhiteColor),
+            enableNextPreviousButtons: false,
+            activeStepBorderColor: Colors.transparent,
+            lineColor: Colors.transparent),
         Expanded(
-          child: ListView.builder(
+          child: PageView.builder(
               itemCount: quiz.questions.length,
               itemBuilder: (_, index) {
                 final question = quiz.questions[index];
-                return ListTile(
-                  title: Text(question.category),
-                  subtitle: Text(question.difficulty),
-                );
+                return QuestionPage(question: question);
               }),
         ),
+      ],
+    );
+  }
+}
+
+class QuestionPage extends StatelessWidget {
+  const QuestionPage({Key? key, required this.question}) : super(key: key);
+  final Question question;
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: kBaseFactor * 3, vertical: kBaseFactor * 3),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(kBaseFactor * 2),
+            child: Image.asset(
+              'assets/imgs/quiz.png',
+              fit: BoxFit.cover,
+              height: 185,
+            ),
+          ),
+        ),
+        Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(kBaseFactor * 2),
+              child: Text(
+                question.question,
+                textScaleFactor: 1.2,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            ...question.answers.map(
+              (e) => ListTileTheme(
+                tileColor: kCardDarkColor,
+                horizontalTitleGap: kBaseFactor * 2,
+                textColor: Theme.of(context).disabledColor,
+                iconColor: kWhiteColor,
+                contentPadding: EdgeInsets.all(kBaseFactor),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(kBaseFactor * 2),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    // tileColor: kCardDarkColor,
+                    title: Padding(
+                      padding: const EdgeInsets.only(left: kBaseFactor * 3),
+                      child: Text(e.answer),
+                    ),
+
+                    // trailing: Icon(Icons.check_circle),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: kBaseFactor * 4),
+                child: GradientButton(onPressed: () {}, label: 'NEXT')),
+            //  Container(
+            //       width: 350,
+            //       color: Theme.of(context).cardTheme.color,
+            //       padding: EdgeInsets.all(kBaseFactor * 2),
+            //       margin: EdgeInsets.all(kBaseFactor),
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         children: [
+            //           Flexible(
+            //               child: Text(
+            //             e.answer,
+            //             textAlign: TextAlign.justify,
+            //             textScaleFactor: .85,
+            //           )),
+            //           Icon(Icons.check)
+            //         ],
+            //       ),
+            //     ))
+          ],
+        )
       ],
     );
   }
