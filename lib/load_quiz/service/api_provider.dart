@@ -19,7 +19,7 @@ final quizFutureProvider =
   return response;
 });
 //**TODO: refactor this into its own bloc */
-late final quizProvider;
+Provider<Quiz?>? quizProvider;
 Quiz? _fetchedQuiz;
 
 class Api {
@@ -39,6 +39,7 @@ class Api {
 
   Future<Quiz> _getQuiz(bool retry) async {
     final response = await dio.get(_url,
+        cancelToken: cancelToken,
         options: Options(
           // followRedirects: false,
           validateStatus: (statusCode) => statusCode! < 500,

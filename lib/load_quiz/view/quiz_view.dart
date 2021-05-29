@@ -24,11 +24,23 @@ class QuizView extends ConsumerWidget {
             body: Center(child: LoadingIndicator()),
           ),
           error: (_, error) => Scaffold(
-              body: Center(
-            child: Text(
-              error.toString(),
-            ),
-          )),
+              body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                Icon(
+                  Icons.error,
+                  color: Theme.of(context).disabledColor,
+                  size: 72,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'There has been an error getting the quiz',
+                    style: TextStyle(color: Theme.of(context).disabledColor),
+                  ),
+                ),
+              ])),
           data: (Quiz quiz) {
             return Scaffold(
                 appBar: AppBar(
@@ -50,7 +62,11 @@ class QuizFlow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final quiz = watch(quizProvider);
+    final quiz = watch(quizProvider!);
+    final Quiz _quiz = quiz!;
+    final List<Question> questions = _quiz.questions;
+    final List<int> stepNumbers =
+        questions.map((e) => questions.indexOf(e)).toList();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -58,7 +74,7 @@ class QuizFlow extends ConsumerWidget {
           activeStep: 1,
           direction: Axis.horizontal,
           enableStepTapping: true,
-          numbers: [1, 2, 3, 4, 5, 6],
+          numbers: stepNumbers,
           enableNextPreviousButtons: false,
         ),
         Expanded(
