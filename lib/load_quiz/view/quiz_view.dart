@@ -18,17 +18,7 @@ class QuizView extends ConsumerWidget {
     return ParticlesBackground(
       child: quiz.when(
         loading: () => Scaffold(
-          body: Center(
-            child: SpinKitCubeGrid(
-              itemBuilder: (_, int index) {
-                return DecoratedBox(
-                    decoration: BoxDecoration(
-                        color: index.isEven
-                            ? Theme.of(context).cardColor
-                            : Theme.of(context).disabledColor));
-              },
-            ),
-          ),
+          body: Center(child: LoadingIndicator()),
         ),
         error: (_, error) => Scaffold(
             body: Center(

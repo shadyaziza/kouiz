@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kouiz/common/connectivity/service/connectivity_provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'common/view/router/router.dart';
@@ -12,11 +13,12 @@ void main() {
   runApp(ProviderScope(child: Kouiz()));
 }
 
-class Kouiz extends StatelessWidget {
+class Kouiz extends ConsumerWidget {
   const Kouiz({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final connectionState = watch(connectivityProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // showPerformanceOverlay: true,
