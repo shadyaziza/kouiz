@@ -73,36 +73,45 @@ class QuizFlow extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        NumberStepper(
-            onStepReached: (int newIndex) {
-              context.read(indexStateProvider).state.animateToPage(newIndex,
-                  duration: Duration(milliseconds: 450), curve: Curves.easeIn);
-            },
-            direction: Axis.horizontal,
-            activeStepColor: Theme.of(context).primaryColorLight,
-            enableStepTapping: true,
-            numbers: stepNumbers,
-            numberStyle: TextStyle(color: kWhiteColor),
-            enableNextPreviousButtons: false,
-            activeStepBorderColor: Colors.transparent,
-            lineColor: Colors.transparent),
+        QuiestionsStepper(stepNumbers: stepNumbers),
         Expanded(
           child: PageView.builder(
               controller: context.read(indexStateProvider).state,
               physics: NeverScrollableScrollPhysics(),
               itemCount: quiz.questions.length,
               itemBuilder: (_, index) {
-                // watch(indexStateProvider).addListener((state) {
-                //   _cont.animateToPage(state,
-                //       duration: Duration(milliseconds: 800),
-                //       curve: Curves.easeIn);
-                // });
                 final question = quiz.questions[index];
                 return QuestionPage(question: question);
               }),
         ),
       ],
     );
+  }
+}
+
+class QuiestionsStepper extends StatelessWidget {
+  const QuiestionsStepper({
+    Key? key,
+    required this.stepNumbers,
+  }) : super(key: key);
+
+  final List<int> stepNumbers;
+
+  @override
+  Widget build(BuildContext context) {
+    return NumberStepper(
+        onStepReached: (int newIndex) {
+          context.read(indexStateProvider).state.animateToPage(newIndex,
+              duration: Duration(milliseconds: 450), curve: Curves.easeIn);
+        },
+        direction: Axis.horizontal,
+        activeStepColor: Theme.of(context).primaryColorLight,
+        enableStepTapping: true,
+        numbers: stepNumbers,
+        numberStyle: TextStyle(color: kWhiteColor),
+        enableNextPreviousButtons: false,
+        activeStepBorderColor: Colors.transparent,
+        lineColor: Colors.transparent);
   }
 }
 
@@ -116,73 +125,132 @@ class QuestionPage extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(
               horizontal: kBaseFactor * 3, vertical: kBaseFactor * 3),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(kBaseFactor * 2),
-            child: Image.asset(
-              'assets/imgs/quiz.png',
-              fit: BoxFit.cover,
-              height: 185,
-            ),
-          ),
+          child: QuestionBanner(),
         ),
         Column(
           children: [
             Padding(
               padding: EdgeInsets.all(kBaseFactor * 2),
-              child: Text(
-                question.question,
-                textScaleFactor: 1.2,
-                textAlign: TextAlign.center,
-              ),
+              child: QuestionText(question: question),
             ),
             ...question.answers.map(
-              (e) => ListTileTheme(
-                tileColor: kCardDarkColor,
-                horizontalTitleGap: kBaseFactor * 2,
-                textColor: Theme.of(context).disabledColor,
-                iconColor: kWhiteColor,
-                contentPadding: EdgeInsets.all(kBaseFactor),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(kBaseFactor * 2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    // tileColor: kCardDarkColor,
-                    title: Padding(
-                      padding: const EdgeInsets.only(left: kBaseFactor * 3),
-                      child: Text(e.answer),
-                    ),
-
-                    // trailing: Icon(Icons.check_circle),
-                  ),
-                ),
-              ),
+              (e) => AnswerWidget(answer: e),
             ),
             Padding(
                 padding: EdgeInsets.symmetric(vertical: kBaseFactor * 4),
                 child: GradientButton(onPressed: () {}, label: 'NEXT')),
-            //  Container(
-            //       width: 350,
-            //       color: Theme.of(context).cardTheme.color,
-            //       padding: EdgeInsets.all(kBaseFactor * 2),
-            //       margin: EdgeInsets.all(kBaseFactor),
-            //       child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //         children: [
-            //           Flexible(
-            //               child: Text(
-            //             e.answer,
-            //             textAlign: TextAlign.justify,
-            //             textScaleFactor: .85,
-            //           )),
-            //           Icon(Icons.check)
-            //         ],
-            //       ),
+
             //     ))
           ],
         )
       ],
+    );
+  }
+}
+
+class AnswerWidget extends StatefulWidget {
+  const AnswerWidget({Key? key, required this.answer}) : super(key: key);
+  final Answer answer;
+
+  @override
+  _AnswerWidgetState createState() => _AnswerWidgetState();
+}
+
+class _AnswerWidgetState extends State<AnswerWidget> {
+  bool isSelected = false;
+  @override
+  Widget build(BuildContext context) {
+    return ListTileTheme(
+      tileColor: isSelected && widget.answer.isCorrect
+          ? kCorrectAnswerColor
+          : isSelected && !widget.answer.isCorrect
+              ? kErrorColor
+              : kCardDarkColor,
+      horizontalTitleGap: kBaseFactor * 2,
+      textColor: isSelected ? kWhiteColor : Theme.of(context).disabledColor,
+      iconColor: widget.answer.isCorrect ? kGreenColor : kWhiteColor,
+      contentPadding: EdgeInsets.all(kBaseFactor),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(kBaseFactor * 2),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        // child:
+        //  ProviderListener(
+        //   provider: quizFutureProvider,
+        //   onChange: (_, AsyncValue<Quiz> quiz) {
+        //     final _quiz = quiz.data!.value;
+        //     final bool isEqualToAnswer = _quiz.questions
+        //         .any((q) => q.hashCode == widget.answer.hashCode);
+        //     if (isEqualToAnswer) {
+        //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //           content: Text(
+        //               '${widget.answer.answer} is ${widget.answer.isCorrect}')));
+        //     }
+        //   },
+        child: ListTile(
+          onTap: () {
+            print(widget.answer.toString());
+            setState(() {
+              isSelected = true;
+            });
+          },
+          title: Padding(
+            padding: const EdgeInsets.only(left: kBaseFactor * 3),
+            child: Text(widget.answer.answer),
+          ),
+          trailing: isSelected && widget.answer.isCorrect
+              ? Icon(Icons.check_circle)
+              : isSelected && !widget.answer.isCorrect
+                  ? Icon(Icons.close_rounded)
+                  : null,
+        ),
+      ),
+    );
+  }
+  // IconData? showIcon(){
+  //   if (isSelected){
+  //     if(widget.answer.isCorrect){
+  //       return Icons.check_circle
+  //     }
+  //   }else{
+  //     return null;
+  //   }
+  // }
+}
+
+class QuestionText extends StatelessWidget {
+  const QuestionText({
+    Key? key,
+    required this.question,
+  }) : super(key: key);
+
+  final Question question;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      question.question,
+      textScaleFactor: 1.2,
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+class QuestionBanner extends StatelessWidget {
+  const QuestionBanner({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(kBaseFactor * 2),
+      child: Image.asset(
+        'assets/imgs/quiz.png',
+        fit: BoxFit.cover,
+        height: 185,
+      ),
     );
   }
 }

@@ -181,9 +181,19 @@ class Question extends Equatable {
     _answers.forEach((key, value) {
       if (value != null) {
         // _answerLetter.add(key);
-
-        _answersKeyValue
-            .addAll({value: map['${key}_correct'] == "false" ? false : true});
+        print(
+            'KEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY\n$key'
+            '\nKEYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY');
+        print('ANSWR A CORRECT\n${map['answer_a_correct']}'
+            '\nANSWER A CORRECT');
+        print('MAP\n$map'
+            '\MAP');
+        print(
+            'OHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n${map['${key}_correct']}\nOHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
+        _answersKeyValue.addAll({
+          value:
+              map['correct_answers']['${key}_correct'] == "false" ? false : true
+        });
       }
     });
     late final bool _hasMultipleCorrectAnswers;
