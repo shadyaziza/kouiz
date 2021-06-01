@@ -66,6 +66,7 @@ class QuizFlow extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     ;
     final quiz = watch(quizFutureProvider).data!.value;
+    watch(quizSolvingProvider).state.setQuiz(quiz);
 
     final List<Question> questions = quiz.questions;
     final List<int> stepNumbers =
@@ -81,7 +82,12 @@ class QuizFlow extends ConsumerWidget {
               itemCount: quiz.questions.length,
               itemBuilder: (_, index) {
                 final question = quiz.questions[index];
-                return QuestionPage(question: question);
+                watch(quizSolvingProvider).state.setCurrentQuestion(question);
+                return QuestionPage(
+                    question: watch(quizSolvingProvider)
+                        .state
+                        .quiz!
+                        .questions[index]);
               }),
         ),
       ],
@@ -136,9 +142,14 @@ class QuestionPage extends StatelessWidget {
             ...question.answers.map(
               (e) => AnswerWidget(answer: e),
             ),
-            Padding(
-                padding: EdgeInsets.symmetric(vertical: kBaseFactor * 4),
-                child: GradientButton(onPressed: () {}, label: 'NEXT')),
+            SizedBox(
+              height: kBaseFactor * 3,
+            ),
+            // Padding(
+            //     padding: EdgeInsets.symmetric(vertical: kBaseFactor * 4),
+            //     child: GradientButton(onPressed: () {
+            //       // context.read(indexStateProvider).
+            //     }, label: 'NEXT')),
 
             //     ))
           ],
@@ -158,6 +169,7 @@ class AnswerWidget extends StatefulWidget {
 
 class _AnswerWidgetState extends State<AnswerWidget> {
   bool isSelected = false;
+
   @override
   Widget build(BuildContext context) {
     return ListTileTheme(
@@ -175,36 +187,32 @@ class _AnswerWidgetState extends State<AnswerWidget> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        // child:
-        //  ProviderListener(
-        //   provider: quizFutureProvider,
-        //   onChange: (_, AsyncValue<Quiz> quiz) {
-        //     final _quiz = quiz.data!.value;
-        //     final bool isEqualToAnswer = _quiz.questions
-        //         .any((q) => q.hashCode == widget.answer.hashCode);
-        //     if (isEqualToAnswer) {
-        //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //           content: Text(
-        //               '${widget.answer.answer} is ${widget.answer.isCorrect}')));
-        //     }
-        //   },
-        child: ListTile(
-          onTap: () {
-            print(widget.answer.toString());
-            setState(() {
-              isSelected = true;
-            });
-          },
-          title: Padding(
-            padding: const EdgeInsets.only(left: kBaseFactor * 3),
-            child: Text(widget.answer.answer),
-          ),
-          trailing: isSelected && widget.answer.isCorrect
-              ? Icon(Icons.check_circle)
-              : isSelected && !widget.answer.isCorrect
-                  ? Icon(Icons.close_rounded)
-                  : null,
-        ),
+        child: Consumer(builder: (_, watch, child) {
+          final quizState = watch(quizSolvingProvider).state;
+          return ListTile(
+            onTap: !quizState.isAnswered
+                ? () {
+                    context
+                        .read(quizSolvingProvider)
+                        .state
+                        .answerSelected(widget.answer);
+
+                    setState(() {
+                      isSelected = true;
+                    });
+                  }
+                : null,
+            title: Padding(
+              padding: const EdgeInsets.only(left: kBaseFactor * 3),
+              child: Text(widget.answer.answer),
+            ),
+            trailing: isSelected && widget.answer.isCorrect
+                ? Icon(Icons.check_circle)
+                : isSelected && !widget.answer.isCorrect
+                    ? Icon(Icons.close_rounded)
+                    : null,
+          );
+        }),
       ),
     );
   }
