@@ -1,4 +1,4 @@
-***Technical Quiz App** 
+***Technical Quiz App***
 
 ___Design credits___: https://dribbble.com/shots/15653050-Quizz-App
  
